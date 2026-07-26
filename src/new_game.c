@@ -1,5 +1,6 @@
 #include "global.h"
 #include "clock.h"
+#include "community_requests.h"
 #include "new_game.h"
 #include "random.h"
 #include "pokemon.h"
@@ -187,6 +188,7 @@ void NewGameInitData(void)
     InitEventData();
     VarSet(VAR_GYM_RANK, 1);
     VarSet(VAR_CHOSEN_GYM_TYPE, GetNewGameGymTypeChoice());
+    CommunityRequests_UnlockForRank(GYM_RANK_MIN);
     ClearTVShowData();
     ResetGabbyAndTy();
     ClearSecretBases();

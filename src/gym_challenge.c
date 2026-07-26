@@ -5,6 +5,7 @@
 #include "battle_setup.h"
 #include "battle_transition.h"
 #include "battle_util.h"
+#include "community_requests.h"
 #include "event_data.h"
 #include "fpmath.h"
 #include "frontier_util.h"
@@ -554,6 +555,9 @@ void GymChallenge_RankUp(void)
         VarSet(VAR_GYM_RANK, rank + 1);
     gSaveBlock3Ptr->gym.pointsEarnedThisRank = 0;
     gSaveBlock3Ptr->gym.winStreak = 0;
+    // Word gets around: the city posts the requests this rank unlocks. Read
+    // the rank back, since the VarSet above is skipped at max rank.
+    CommunityRequests_UnlockForRank(VarGet(VAR_GYM_RANK));
 }
 
 // Mirrors GetTrainerMoneyToGive's formula (4 * lastMonLevel * classRate).

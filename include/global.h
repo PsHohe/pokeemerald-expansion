@@ -254,6 +254,7 @@ struct NPCFollower
 #define ITEM_FLAGS_COUNT ((ITEMS_COUNT / 8) + ((ITEMS_COUNT % 8) ? 1 : 0))
 
 #include "constants/gym_challenge.h"
+#include "constants/community_requests.h"
 
 // A saved gym team slot refers to a Pokemon by identity, not by location:
 // the mon is found by scanning the party and PC boxes for a matching
@@ -305,6 +306,9 @@ struct SaveBlock3
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
 #endif
     struct GymLeaderState gym;
+    // One byte per community request: status in the low bits, current step
+    // above it (see include/constants/community_requests.h).
+    u8 requests[NUM_COMMUNITY_REQUESTS];
 }; /* max size 1624 bytes */
 
 extern struct SaveBlock3 *gSaveBlock3Ptr;

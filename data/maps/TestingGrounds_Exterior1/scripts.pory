@@ -330,6 +330,148 @@ script TestingGrounds_Exterior1_EventScript_ExpBlockerNpc {
     end
 }
 
+// ---------------------------------------------------------------------------
+// The gym's mailboard: opens the Community Requests board, where the city
+// posts its sidequests.
+// ---------------------------------------------------------------------------
+script TestingGrounds_Exterior1_EventScript_RequestBoard {
+    lockall
+    fadescreen(FADE_TO_BLACK)
+    // The special is declared waitstate=1, so the script stops here by
+    // itself until the board closes.
+    special(CommunityRequests_OpenBoard)
+    releaseall
+    end
+}
+
+// ---------------------------------------------------------------------------
+// Community request: "Meet the Leader". Posted with the rank 1 batch, so it
+// is waiting on the board from the first day. Talking to the visitor is the
+// whole request.
+// ---------------------------------------------------------------------------
+script TestingGrounds_Exterior1_EventScript_Visitor {
+    lock
+    faceplayer
+    setvar(VAR_0x8004, REQUEST_GREET_THE_LEADER)
+    special(CommunityRequests_GetRequestStatus)
+    switch (var(VAR_RESULT)) {
+        case REQUEST_STATUS_ACTIVE:
+            msgbox(TestingGrounds_Exterior1_Text_VisitorGreeting)
+            special(CommunityRequests_HasRoomForRewards)
+            if (var(VAR_RESULT) == FALSE) {
+                msgbox(TestingGrounds_Exterior1_Text_RequestBagFull)
+                release
+                end
+            }
+            call(CommunityRequests_EventScript_PayReward)
+        case REQUEST_STATUS_DONE:
+            msgbox(TestingGrounds_Exterior1_Text_VisitorDone)
+        default:
+            msgbox(TestingGrounds_Exterior1_Text_VisitorLocked)
+    }
+    release
+    end
+}
+
+// ---------------------------------------------------------------------------
+// Community request: "A Potion, Please". Not on the board until the old man
+// asks in person — the script-posted case.
+// ---------------------------------------------------------------------------
+script TestingGrounds_Exterior1_EventScript_OldMan {
+    lock
+    faceplayer
+    setvar(VAR_0x8004, REQUEST_POTION_FOR_THE_OLD_MAN)
+    special(CommunityRequests_GetRequestStatus)
+    switch (var(VAR_RESULT)) {
+        case REQUEST_STATUS_LOCKED:
+            msgbox(TestingGrounds_Exterior1_Text_OldManAsk)
+            special(CommunityRequests_UnlockRequest)
+            msgbox(TestingGrounds_Exterior1_Text_OldManPosted)
+        case REQUEST_STATUS_ACTIVE:
+            checkitem(ITEM_POTION)
+            if (var(VAR_RESULT) == FALSE) {
+                msgbox(TestingGrounds_Exterior1_Text_OldManWaiting)
+                release
+                end
+            }
+            msgbox(TestingGrounds_Exterior1_Text_OldManHandOver, MSGBOX_YESNO)
+            if (var(VAR_RESULT) == NO) {
+                msgbox(TestingGrounds_Exterior1_Text_OldManWaiting)
+                release
+                end
+            }
+            special(CommunityRequests_HasRoomForRewards)
+            if (var(VAR_RESULT) == FALSE) {
+                msgbox(TestingGrounds_Exterior1_Text_RequestBagFull)
+                release
+                end
+            }
+            removeitem(ITEM_POTION)
+            msgbox(TestingGrounds_Exterior1_Text_OldManThanks)
+            call(CommunityRequests_EventScript_PayReward)
+        case REQUEST_STATUS_DONE:
+            msgbox(TestingGrounds_Exterior1_Text_OldManDone)
+    }
+    release
+    end
+}
+
+// ---------------------------------------------------------------------------
+// Community request: "The Rowdy Trainer". Three steps, so the board shows a
+// STEP x/3 readout that moves as the conversation goes on. A step that needs
+// a battle would run trainerbattle_* before AdvanceStep the same way.
+// ---------------------------------------------------------------------------
+script TestingGrounds_Exterior1_EventScript_RowdyTrainer {
+    lock
+    faceplayer
+    setvar(VAR_0x8004, REQUEST_ROWDY_TRAINER)
+    special(CommunityRequests_GetRequestStatus)
+    if (var(VAR_RESULT) == REQUEST_STATUS_DONE) {
+        msgbox(TestingGrounds_Exterior1_Text_RowdyDone)
+        release
+        end
+    }
+    if (var(VAR_RESULT) == REQUEST_STATUS_LOCKED) {
+        msgbox(TestingGrounds_Exterior1_Text_RowdyLocked)
+        release
+        end
+    }
+    special(CommunityRequests_GetRequestStep)
+    switch (var(VAR_RESULT)) {
+        case 0:
+            msgbox(TestingGrounds_Exterior1_Text_RowdyStep1)
+            special(CommunityRequests_AdvanceStep)
+        case 1:
+            msgbox(TestingGrounds_Exterior1_Text_RowdyStep2)
+            special(CommunityRequests_AdvanceStep)
+        default:
+            msgbox(TestingGrounds_Exterior1_Text_RowdyStep3)
+            special(CommunityRequests_HasRoomForRewards)
+            if (var(VAR_RESULT) == FALSE) {
+                msgbox(TestingGrounds_Exterior1_Text_RequestBagFull)
+                release
+                end
+            }
+            call(CommunityRequests_EventScript_PayReward)
+    }
+    release
+    end
+}
+
+// ---------------------------------------------------------------------------
+// Supply crate: hands out POTIONs (test map only). There is no MART here, and
+// "A Potion, Please" needs one to hand over.
+// ---------------------------------------------------------------------------
+script TestingGrounds_Exterior1_EventScript_SupplyCrate {
+    lockall
+    msgbox(TestingGrounds_Exterior1_Text_SupplyCrate, MSGBOX_YESNO)
+    if (var(VAR_RESULT) == YES) {
+        giveitem(ITEM_POTION)
+    }
+    releaseall
+    end
+}
+
 text TestingGrounds_Exterior1_Text_GiftIntro {
     "Ah, our new GYM LEADER!\p"
     "A LEADER needs POKéMON of the GYM's\n"
@@ -724,4 +866,96 @@ text TestingGrounds_Exterior1_Text_ExpBlockerStateActive {
     "EXP gain is currently ACTIVE.\p"
     "Use the EXP. BLOCKER to pause it\n"
     "whenever you like.$"
+}
+
+text TestingGrounds_Exterior1_Text_RequestBagFull {
+    "Your BAG is too full to accept the\n"
+    "reward.\p"
+    "Come back once you've made some\n"
+    "room!$"
+}
+
+text TestingGrounds_Exterior1_Text_VisitorGreeting {
+    "Oh! You really are the new GYM\n"
+    "LEADER!\p"
+    "I put a note on the GYM's board just\n"
+    "hoping you'd read it.\p"
+    "Meeting you in person is more than\n"
+    "I hoped for. Thank you!$"
+}
+
+text TestingGrounds_Exterior1_Text_VisitorDone {
+    "I'm telling everyone back home that\n"
+    "I met the GYM LEADER!$"
+}
+
+text TestingGrounds_Exterior1_Text_VisitorLocked {
+    "Is this GYM open to visitors?\p"
+    "I'll wait here until someone says\n"
+    "otherwise.$"
+}
+
+text TestingGrounds_Exterior1_Text_OldManAsk {
+    "My POKéMON took a bad fall and I\n"
+    "can't make it to the MART.\p"
+    "Could the GYM spare a POTION for an\n"
+    "old man?$"
+}
+
+text TestingGrounds_Exterior1_Text_OldManPosted {
+    "I'll pin my request to the GYM's\n"
+    "board so you don't forget.$"
+}
+
+text TestingGrounds_Exterior1_Text_OldManWaiting {
+    "A POTION. Any POTION. I'd be so\n"
+    "grateful.$"
+}
+
+text TestingGrounds_Exterior1_Text_OldManHandOver {
+    "Oh, is that a POTION?\p"
+    "Would you part with it?$"
+}
+
+text TestingGrounds_Exterior1_Text_OldManThanks {
+    "Bless you, LEADER.\p"
+    "A GYM that looks after its\n"
+    "neighbors is a GYM worth having.$"
+}
+
+text TestingGrounds_Exterior1_Text_OldManDone {
+    "My partner is back on its feet,\n"
+    "thanks to you.$"
+}
+
+text TestingGrounds_Exterior1_Text_RowdyLocked {
+    "What are you looking at?$"
+}
+
+text TestingGrounds_Exterior1_Text_RowdyStep1 {
+    "So you're the LEADER around here.\p"
+    "This city's TRAINERS are soft. Someone\n"
+    "had to say it.$"
+}
+
+text TestingGrounds_Exterior1_Text_RowdyStep2 {
+    "Still here? Fine.\p"
+    "Maybe I've been picking fights with\n"
+    "the wrong people.$"
+}
+
+text TestingGrounds_Exterior1_Text_RowdyStep3 {
+    "All right, all right. I'll apologize\n"
+    "to the folks by the gate.\p"
+    "Tell the city the GYM sorted it out.$"
+}
+
+text TestingGrounds_Exterior1_Text_RowdyDone {
+    "I've been keeping it civil. Mostly.$"
+}
+
+text TestingGrounds_Exterior1_Text_SupplyCrate {
+    "The GYM's supply crate. There are\n"
+    "POTIONS inside.\p"
+    "Take one?$"
 }

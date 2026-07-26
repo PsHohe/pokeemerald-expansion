@@ -664,3 +664,10 @@ gSpecials::
 	def_special GymTeams_ClearTeam
 	def_special GymTeams_LoadTeamIntoParty
 	def_special GymChallenge_ChooseGymParty, waitstate=1
+	def_special CommunityRequests_OpenBoard, waitstate=1
+	def_special CommunityRequests_GetRequestStatus
+	def_special CommunityRequests_GetRequestStep
+	def_special CommunityRequests_UnlockRequest
+	def_special CommunityRequests_AdvanceStep
+	def_special CommunityRequests_HasRoomForRewards
+	def_special CommunityRequests_CompleteRequest

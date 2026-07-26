@@ -19,6 +19,7 @@
 #include "constants/berry.h"
 #include "constants/cable_club.h"
 #include "constants/coins.h"
+#include "constants/community_requests.h"
 #include "constants/comparison_operators.h"
 #include "constants/contest.h"
 #include "constants/daycare.h"
@@ -1739,5 +1740,6 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/scripts/battle_frontier.inc"
 	.include "data/scripts/apricorn_tree.inc"
 	.include "data/scripts/wild_encounter.inc"
+	.include "data/scripts/community_requests.inc"
 
 	.include "data/maps/TestingGrounds_Exterior1/scripts.inc"

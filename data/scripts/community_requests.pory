@@ -1,0 +1,35 @@
+// Shared tail of every community request. Callers put the request id in
+// VAR_0x8004, check CommunityRequests_HasRoomForRewards first, and then
+// call(CommunityRequests_EventScript_PayReward) — it marks the request done
+// and hands over the whole reward, money and items together.
+//
+// The payout is deliberately one beat: a single fanfare over a single-page
+// message. CommunityRequests_CompleteRequest has already added everything to
+// the bag by the time the message prints, and fills in STR_VAR_1 (money),
+// STR_VAR_2 (the item stacks as text) and VAR_0x8006 (how many stacks).
+
+script CommunityRequests_EventScript_PayReward {
+    special(CommunityRequests_CompleteRequest)
+    // Refuses ids that aren't a posted request, so a caller that skipped its
+    // status check pays out nothing instead of a message full of stale text.
+    if (var(VAR_RESULT) == FALSE) {
+        return
+    }
+    playfanfare(MUS_OBTAIN_ITEM)
+    if (var(VAR_0x8006) > 0) {
+        message(CommunityRequests_Text_RequestPaidWithItems)
+    } else {
+        message(CommunityRequests_Text_RequestPaid)
+    }
+    waitfanfare
+    waitmessage
+    return
+}
+
+text CommunityRequests_Text_RequestPaid {
+    "{PLAYER} received ¥{STR_VAR_1} from\nthe grateful citizens!$"
+}
+
+text CommunityRequests_Text_RequestPaidWithItems {
+    "{PLAYER} received ¥{STR_VAR_1} and\n{STR_VAR_2} from the grateful citizens!$"
+}
