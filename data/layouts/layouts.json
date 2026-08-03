@@ -9333,6 +9333,16 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/TestingGrounds_Exterior1/border.bin",
       "blockdata_filepath": "data/layouts/TestingGrounds_Exterior1/map.bin"
+    },
+    {
+      "id": "LAYOUT_TESTING_GROUNS_CUSTOM_TILESET",
+      "name": "TestingGrouns_CustomTileset_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_BaseOutside",
+      "secondary_tileset": "gTileset_GymArea",
+      "border_filepath": "data/layouts/TestingGrouns_CustomTileset/border.bin",
+      "blockdata_filepath": "data/layouts/TestingGrouns_CustomTileset/map.bin"
     }
   ]
 }

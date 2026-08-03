@@ -1163,6 +1163,7 @@
     "SevenIsland_SevaultCanyon_House_Frlg"
   ],
   "gMapGroup_TestingGrounds": [
-    "TestingGrounds_Exterior1"
+    "TestingGrounds_Exterior1",
+    "TestingGrouns_CustomTileset"
   ]
 }

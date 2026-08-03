@@ -1550,5 +1550,16 @@ const struct Tileset gTileset_BaseOutside =
     .palettes = gTilesetPalettes_PorytilesManaged_BaseOutside,
     .metatiles = gMetatiles_PorytilesManaged_BaseOutside,
     .metatileAttributes = gMetatileAttributes_PorytilesManaged_BaseOutside,
-    .callback = InitTilesetAnim_PorytilesManaged_BaseOutside,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_GymArea =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PorytilesManaged_GymArea,
+    .palettes = gTilesetPalettes_PorytilesManaged_GymArea,
+    .metatiles = gMetatiles_PorytilesManaged_GymArea,
+    .metatileAttributes = gMetatileAttributes_PorytilesManaged_GymArea,
+    .callback = NULL,
 };

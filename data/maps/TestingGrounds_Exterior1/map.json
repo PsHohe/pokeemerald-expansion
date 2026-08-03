@@ -148,6 +148,13 @@
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN",
       "dest_warp_id": "3"
+    },
+    {
+      "x": 12,
+      "y": 25,
+      "elevation": 0,
+      "dest_map": "MAP_TESTING_GROUNS_CUSTOM_TILESET",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
