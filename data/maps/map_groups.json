@@ -75,7 +75,8 @@
     "gMapGroup_IndoorTwoIslandRoute_Frlg",
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
-    "gMapGroup_TestingGrounds"
+    "gMapGroup_TestingGrounds",
+    "gMapGroup_Outside"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1165,5 +1166,8 @@
   "gMapGroup_TestingGrounds": [
     "TestingGrounds_Exterior1",
     "TestingGrouns_CustomTileset"
+  ],
+  "gMapGroup_Outside": [
+    "GymOutside"
   ]
 }

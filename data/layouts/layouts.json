@@ -9343,6 +9343,16 @@
       "secondary_tileset": "gTileset_GymArea",
       "border_filepath": "data/layouts/TestingGrouns_CustomTileset/border.bin",
       "blockdata_filepath": "data/layouts/TestingGrouns_CustomTileset/map.bin"
+    },
+    {
+      "id": "LAYOUT_GYM_OUTSIDE",
+      "name": "GymOutside_Layout",
+      "width": 30,
+      "height": 20,
+      "primary_tileset": "gTileset_BaseOutside",
+      "secondary_tileset": "gTileset_GymArea",
+      "border_filepath": "data/layouts/GymOutside/border.bin",
+      "blockdata_filepath": "data/layouts/GymOutside/map.bin"
     }
   ]
 }

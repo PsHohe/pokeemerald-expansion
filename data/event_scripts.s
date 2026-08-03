@@ -1745,3 +1745,5 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/maps/TestingGrounds_Exterior1/scripts.inc"
 
 	.include "data/maps/TestingGrouns_CustomTileset/scripts.inc"
+
+	.include "data/maps/GymOutside/scripts.inc"
